@@ -69,6 +69,55 @@ def test_search(vault):
         c.search_notes("x")
 
 
+def test_search_sorting_and_limit_boundaries(vault):
+    c = VaultConnector(vault, git_sync=False)
+    notes = {
+        "z.md": "needle needle",
+        "Decisions/b.md": "needle",
+        "Concepts/a.md": "needle",
+    }
+    for relative, content in notes.items():
+        path = vault / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+    expected_paths = ["z.md", "Concepts/a.md", "Decisions/b.md"]
+    assert [item["path"] for item in c.search_notes("needle", limit=30)] == expected_paths
+    assert [item["path"] for item in c.search_notes("needle", limit=1)] == expected_paths[:1]
+
+
+def test_search_limit_true_currently_acts_as_one(vault):
+    c = VaultConnector(vault, git_sync=False)
+    (vault / "a.md").write_text("needle", encoding="utf-8")
+    (vault / "b.md").write_text("needle", encoding="utf-8")
+
+    # bool is an int subclass, so True currently passes the limit validation as 1.
+    assert c.search_notes("needle", limit=True) == c.search_notes("needle", limit=1)
+
+
+def test_search_preview_format(vault):
+    c = VaultConnector(vault, git_sync=False)
+    content = "needle\n" + ("x" * 230)
+    (vault / "preview.md").write_text(content, encoding="utf-8")
+
+    result = c.search_notes("needle")
+
+    assert result == [{
+        "path": "preview.md",
+        "matches": 1,
+        "preview": content[:220].replace("\n", " "),
+    }]
+
+
+def test_search_ignores_symlink_files(vault, tmp_path):
+    c = VaultConnector(vault, git_sync=False)
+    outside_note = tmp_path / "outside.md"
+    outside_note.write_text("needle", encoding="utf-8")
+    (vault / "linked.md").symlink_to(outside_note)
+
+    assert c.search_notes("needle") == []
+
+
 def test_git_pull_commit_push_and_noop(tmp_path):
     remote = tmp_path / "remote.git"
     run("init", "--bare", "--initial-branch=main", str(remote), cwd=tmp_path)
