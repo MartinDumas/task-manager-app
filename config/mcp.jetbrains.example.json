@@ -1,0 +1,20 @@
+{
+  "servers": {
+    "task-manager-vault": {
+      "command": "/ABSOLUTE/PATH/task-manager-app/.venv/bin/python",
+      "args": ["/ABSOLUTE/PATH/task-manager-app/mcp_connector/server.py"],
+      "env": {
+        "TASK_MANAGER_VAULT_PATH": "/ABSOLUTE/PATH/task-manager-vault",
+        "VAULT_GIT_SYNC": "true"
+      }
+    },
+    "github": {
+      "url": "https://api.githubcopilot.com/mcp/x/repos/readonly",
+      "requestInit": {
+        "headers": {
+          "Authorization": "Bearer PASTE_YOUR_READ_ONLY_GITHUB_PAT_LOCALLY"
+        }
+      }
+    }
+  }
+}

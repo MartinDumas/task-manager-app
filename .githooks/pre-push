@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+"""Block direct pushes to main and master."""
+import sys
+
+for line in sys.stdin:
+    parts = line.strip().split()
+    if len(parts) >= 3 and parts[2] in {
+        "refs/heads/main",
+        "refs/heads/master",
+    }:
+        print(
+            "BLOCK: direct push to main/master forbidden",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+sys.exit(0)

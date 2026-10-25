@@ -1,0 +1,12 @@
+
+# Local environments
+.venv/
+.venv312/
+.idea/
+__pycache__/
+.pytest_cache/
+*.pyc
+.DS_Store
+
+# Local MCP configuration
+mcp.json
