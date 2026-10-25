@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "/Users/martin/Documents/Data-Engineering/.venv312/bin/python /Users/martin/Documents/Data-Engineering/scripts/pre_tool_guard.py",
+        "timeoutSec": 30
+      }
+    ]
+  }
+}
