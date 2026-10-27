@@ -242,7 +242,7 @@ class VaultConnector:
         """Case-insensitive substring search; no embeddings or unverified claims."""
         if not isinstance(query, str) or not (2 <= len(query.strip()) <= 100):
             raise VaultError("query length must be 2..100")
-        if not isinstance(limit, int) or not (1 <= limit <= 30):
+        if isinstance(limit, bool) or not isinstance(limit, int) or not (1 <= limit <= 30):
             raise VaultError("limit must be 1..30")
         matches = []
         term = query.casefold().strip()

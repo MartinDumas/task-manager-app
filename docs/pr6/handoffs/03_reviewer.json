@@ -1,0 +1,35 @@
+{
+  "role": "reviewer",
+  "task_id": "PR6-STRICT-SEARCH-LIMIT",
+  "received_from": [
+    "docs/pr6/offline-example/01_planner.json",
+    "Уточнений handoff Coder, наданий користувачем (revision 2)",
+    "Попереднє рішення Reviewer та підтвердження користувача щодо передіснуючого статусу .github/hooks/guardrails.json"
+  ],
+  "decision": "changes_requested",
+  "findings": [
+    {
+      "severity": "low",
+      "file": "tests/test_pr6_limit_validation.py",
+      "lines": "3-4",
+      "issue": "Застарілий module docstring стверджує, що поточна реалізація приймає True і що ці тести мають падати до застосування patch; поточний diff уже відхиляє True, а цільові тести проходять.",
+      "feedback_to_coder": "Оновити або прибрати застарілий module docstring, щоб він описував чинний стан регресійних тестів, і повторно передати handoff."
+    }
+  ],
+  "evidence": [
+    "Planner вимагає відхиляти True/False, зберегти 1..30 і підкласи int та не змінювати query.",
+    "Diff mcp_connector/core.py відхиляє bool перед isinstance(limit, int); diff не змінює query, обхід vault або структуру результату.",
+    "Diff tests/test_connector.py перевіряє відхилення True та False; tests/test_pr6_limit_validation.py додатково перевіряє 0, 31, 1, 30, IntSubclass(5) та preview output.",
+    ".venv312/bin/python -m pytest -q tests/test_connector.py tests/test_pr6_limit_validation.py: 21 passed.",
+    ".venv312/bin/python -m pytest -q: 43 passed.",
+    "Diff .github/hooks/guardrails.json містить лише додавання кінцевого newline; факт передіснуючого статусу M підтверджений користувачем, тому файл не зараховано до змін Coder."
+  ],
+  "context_retained": true,
+  "guardrails": [
+    "GR-W01: явне схвалення до редагування підтверджене користувачем; цей Reviewer не змінював production-код.",
+    "GR-A02: перевірено git status і diff.",
+    "GR-B01: commit/push не виконувалися.",
+    "GR-B03: Obsidian vault не читався та не змінювався."
+  ],
+  "handoff_to": "PR6 Coder: виправити застарілий docstring у tests/test_pr6_limit_validation.py та повторно передати handoff; PR author: не включати .github/hooks/guardrails.json до PR."
+}

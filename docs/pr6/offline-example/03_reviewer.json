@@ -1,0 +1,23 @@
+{
+  "role": "reviewer",
+  "task_id": "PR6-STRICT-SEARCH-LIMIT",
+  "received_from": [
+    "01_planner.json",
+    "02_coder.json"
+  ],
+  "decision": "changes_requested",
+  "findings": [
+    "Заміна на type(limit) is int заборонить IntSubclass(5)"
+  ],
+  "evidence": [
+    "issubclass(IntSubclass, int) == True",
+    "План вимагав збереження підкласів"
+  ],
+  "context_retained": true,
+  "guardrails": [
+    "GR-W01",
+    "GR-B01",
+    "GR-B03"
+  ],
+  "handoff_to": "coder: use isinstance(limit, bool) or not isinstance(limit, int)"
+}

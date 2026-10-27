@@ -86,13 +86,14 @@ def test_search_sorting_and_limit_boundaries(vault):
     assert [item["path"] for item in c.search_notes("needle", limit=1)] == expected_paths[:1]
 
 
-def test_search_limit_true_currently_acts_as_one(vault):
+@pytest.mark.parametrize("limit", [True, False])
+def test_search_rejects_boolean_limit(vault, limit):
     c = VaultConnector(vault, git_sync=False)
     (vault / "a.md").write_text("needle", encoding="utf-8")
     (vault / "b.md").write_text("needle", encoding="utf-8")
 
-    # bool is an int subclass, so True currently passes the limit validation as 1.
-    assert c.search_notes("needle", limit=True) == c.search_notes("needle", limit=1)
+    with pytest.raises(VaultError, match="limit"):
+        c.search_notes("needle", limit=limit)
 
 
 def test_search_preview_format(vault):
