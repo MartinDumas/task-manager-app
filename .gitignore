@@ -10,3 +10,6 @@ __pycache__/
 
 # Local MCP configuration
 mcp.json
+
+# Local regenerated semantic index
+.pr7-vector-index/

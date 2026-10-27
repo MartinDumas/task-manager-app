@@ -5,7 +5,7 @@ import hashlib
 import json
 import re
 import subprocess
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -85,6 +85,9 @@ class VaultConnector:
     vault_path: Path
     git_sync: bool = True
     branch: str = "main"
+    search_mode: str = "lexical"
+    vector_index_dir: Path | None = None
+    embedding_provider: Any = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         self.vault_path = Path(self.vault_path).expanduser().resolve()
@@ -92,6 +95,8 @@ class VaultConnector:
             raise VaultError(f"vault directory not found: {self.vault_path}")
         if self.branch not in {"main", "master"}:
             raise VaultError("unsupported branch")
+        if self.search_mode not in {"lexical", "semantic"}:
+            raise VaultError("Unsupported search_mode")
         if self.git_sync and not (self.vault_path / ".git").exists():
             raise VaultError("vault must be its own git clone when git_sync is enabled")
 
@@ -239,11 +244,20 @@ class VaultConnector:
         return {"status": "ok", "path": safe[0].relative_to(self.vault_path).as_posix(), "content": raw}
 
     def search_notes(self, query: str, limit: int = 10) -> list[dict[str, Any]]:
-        """Case-insensitive substring search; no embeddings or unverified claims."""
+        """Search using lexical baseline or semantic indexed retrieval (same signature)."""
         if not isinstance(query, str) or not (2 <= len(query.strip()) <= 100):
             raise VaultError("query length must be 2..100")
         if isinstance(limit, bool) or not isinstance(limit, int) or not (1 <= limit <= 30):
             raise VaultError("limit must be 1..30")
+        if self.search_mode == "semantic":
+            from mcp_connector.vector_search import EmbeddedVectorIndex, cached_sentence_transformer
+            if self.vector_index_dir is None:
+                raise VaultError("Semantic mode requires a local index directory")
+            provider = self.embedding_provider or cached_sentence_transformer()
+            try:
+                return EmbeddedVectorIndex(self.vault_path, self.vector_index_dir, provider).search(query, limit)
+            except (ValueError, OSError) as exc:
+                raise VaultError(str(exc)) from exc
         matches = []
         term = query.casefold().strip()
         for path in sorted(self.vault_path.rglob("*.md")):

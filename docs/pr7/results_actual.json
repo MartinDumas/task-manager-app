@@ -1,0 +1,129 @@
+[
+  {
+    "id": "Q01",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 2,
+      "evidence": [
+        "Concepts/Task.md"
+      ]
+    }
+  },
+  {
+    "id": "Q02",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 2,
+      "evidence": [
+        "Concepts/DueDate.md"
+      ]
+    }
+  },
+  {
+    "id": "Q03",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 0,
+      "evidence": []
+    }
+  },
+  {
+    "id": "Q04",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 0,
+      "evidence": []
+    }
+  },
+  {
+    "id": "Q05",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 2,
+      "evidence": [
+        "Decisions/ADR-002-SeparateKnowledgeVault.md",
+        "Decisions/ADR-004-HarnessAccessBoundary.md"
+      ]
+    }
+  },
+  {
+    "id": "Q06",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 1,
+      "evidence": [
+        "Decisions/ADR-002-SeparateKnowledgeVault.md"
+      ]
+    }
+  },
+  {
+    "id": "Q07",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 0,
+      "evidence": []
+    }
+  },
+  {
+    "id": "Q08",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 1,
+      "evidence": [
+        "Decisions/Валідація-булевих-значень-параметра-limit-037accb84d81.md"
+      ]
+    }
+  },
+  {
+    "id": "Q09",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 2,
+      "evidence": [
+        "Decisions/ADR-004-HarnessAccessBoundary.md",
+        "Templates/Template-Decision.md"
+      ]
+    }
+  },
+  {
+    "id": "Q10",
+    "baseline": {
+      "score": 0,
+      "evidence": []
+    },
+    "semantic": {
+      "score": 1,
+      "evidence": [
+        "Decisions/ADR-002-SeparateKnowledgeVault.md",
+        "Decisions/ADR-004-HarnessAccessBoundary.md"
+      ]
+    }
+  }
+]

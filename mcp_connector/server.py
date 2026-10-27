@@ -9,6 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from mcp.server.fastmcp import FastMCP  # noqa: E402
 from mcp_connector.core import VaultConnector, VaultError  # noqa: E402
+from mcp_connector.search_mode import current_mode, INDEX_DIR  # noqa: E402
 
 mcp = FastMCP("task-manager-vault", instructions="Read and write Obsidian knowledge via typed tools only.")
 
@@ -17,7 +18,10 @@ def _connector() -> VaultConnector:
     vault = os.environ.get("TASK_MANAGER_VAULT_PATH")
     if not vault:
         raise VaultError("TASK_MANAGER_VAULT_PATH environment variable is required")
-    return VaultConnector(Path(vault), git_sync=os.environ.get("VAULT_GIT_SYNC", "true").lower() == "true")
+    return VaultConnector(
+        Path(vault), git_sync=os.environ.get("VAULT_GIT_SYNC", "true").lower() == "true",
+        search_mode=current_mode(), vector_index_dir=INDEX_DIR,
+    )
 
 
 @mcp.tool()
@@ -34,7 +38,7 @@ def get_note(note_name: str) -> dict:
 
 @mcp.tool()
 def search_notes(query: str, limit: int = 10) -> list[dict]:
-    """Find matching notes in vault by case-insensitive text search."""
+    """Retrieve notes via lexical or semantic mode; agent-facing signature is unchanged."""
     return _connector().search_notes(query, limit)
 
 
