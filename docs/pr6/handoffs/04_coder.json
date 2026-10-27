@@ -1,0 +1,46 @@
+{
+  "role": "coder",
+  "task_id": "PR6-STRICT-SEARCH-LIMIT",
+  "revision": 3,
+  "received_from": [
+    "docs/pr6/handoffs/03_reviewer.json",
+    "Користувач підтвердив редагування відповідно до GR-W01"
+  ],
+  "changes": [
+    {
+      "file": "tests/test_pr6_limit_validation.py",
+      "change": "Замінено лише застарілий module docstring; тепер він описує перевірки відхилення bool та некоректних лімітів і прийняття цілих значень 1–30, включно з підкласами int."
+    }
+  ],
+  "design_choices": [
+    "Логіку тестів і production-код не змінено. Описано актуальний контракт без тверджень, що True приймається або що тести мають падати до patch."
+  ],
+  "commands": [
+    ".venv312/bin/python -m pytest -q tests/test_pr6_limit_validation.py",
+    ".venv312/bin/python -m pytest -q",
+    "git diff --check"
+  ],
+  "test_results": {
+    "target": {
+      "command": ".venv312/bin/python -m pytest -q tests/test_pr6_limit_validation.py",
+      "result": "11 passed in 0.05s"
+    },
+    "full": {
+      "command": ".venv312/bin/python -m pytest -q",
+      "result": "43 passed in 0.78s"
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "result": "Passed; no whitespace errors reported."
+    }
+  },
+  "known_limitations": [
+    "Зміна обмежена docstring, як вимагалось; наявні сторонні зміни робочого дерева не змінювалися."
+  ],
+  "guardrails": [
+    "GR-W01: явне підтвердження користувача отримано до редагування.",
+    "Не змінювалися mcp_connector/core.py, tests/test_connector.py, guardrails або Obsidian vault.",
+    "Commit і push не виконувалися."
+  ],
+  "handoff_to": "PR6 Reviewer: повторно перевірити актуальний docstring і підтвердити, що зауваження щодо застарілого опису усунуто."
+}

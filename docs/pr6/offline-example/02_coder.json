@@ -1,0 +1,24 @@
+{
+  "role": "coder",
+  "task_id": "PR6-STRICT-SEARCH-LIMIT",
+  "received_from": "01_planner.json",
+  "changes": [
+    "candidate: type(limit) is int (навмисна офлайн-модель регресії)"
+  ],
+  "design_choices": "Наївна сувора перевірка типу; не відповідає вимозі інтерфейсу щодо int-підкласів",
+  "commands": [
+    "pytest tests/test_pr6_limit_validation.py — offline simulated design review"
+  ],
+  "test_results": {
+    "status": "review_required",
+    "int_subclass": "fails"
+  },
+  "known_limitations": [
+    "IntSubclass(5) отримує помилку"
+  ],
+  "guardrails": [
+    "GR-W01 (approval required)",
+    "GR-B01"
+  ],
+  "handoff_to": "reviewer"
+}

@@ -1,0 +1,36 @@
+{
+  "role": "planner",
+  "task_id": "PR6-STRICT-SEARCH-LIMIT",
+  "inputs": [
+    "mcp_connector/core.py",
+    "vault ADR proposed: limit bool",
+    "docs/guardrails.md"
+  ],
+  "requirements": [
+    "reject True and False",
+    "preserve 1..30 and int subclasses",
+    "do not change query"
+  ],
+  "decision_rationale": "bool є підкласом int, тому ізольована перевірка isinstance(limit, bool) перед isinstance(limit, int) відповідає ADR proposed; потрібна згода людини",
+  "risks": [
+    "Зміна контракту limit=True",
+    "type(limit) is int відхилить int підкласи"
+  ],
+  "tests": [
+    "True/False",
+    "1/30",
+    "IntSubclass(5)",
+    "0/31",
+    "unchanged search output"
+  ],
+  "guardrails": [
+    "GR-A01",
+    "GR-W01",
+    "GR-B01",
+    "GR-B03"
+  ],
+  "open_questions": [
+    "Людина має схвалити зміну, бо ADR proposed"
+  ],
+  "handoff_to": "coder"
+}
